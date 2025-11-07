@@ -114,10 +114,14 @@ body {
     overflow: hidden;
 }
 
-.featured-video img {
+.featured-video a {
     float: left;
     margin-right: 15px;
-    border: 1px solid #ccc;
+    display: block;
+}
+
+.video-info {
+    overflow: hidden;
 }
 
 .video-info h3 {
@@ -148,10 +152,13 @@ body {
 #main-content {
     float: left;
     width: 720px;
+    min-height: 400px;
 }
 
 .section {
     margin-bottom: 30px;
+    overflow: hidden;
+    clear: both;
 }
 
 .section h2 {
@@ -164,22 +171,25 @@ body {
 
 .video-thumb {
     float: left;
-    width: 340px;
-    margin-right: 20px;
-    margin-bottom: 15px;
-    overflow: hidden;
+    width: 160px;
+    margin-right: 15px;
+    margin-bottom: 20px;
 }
 
-.video-thumb img {
-    float: left;
-    margin-right: 10px;
-    border: 1px solid #ccc;
+.video-thumb a {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.thumb-info {
+    width: 100%;
 }
 
 .thumb-info h4 {
-    margin: 0 0 5px 0;
-    font-size: 12px;
+    margin: 0 0 3px 0;
+    font-size: 11px;
     font-weight: bold;
+    line-height: 1.3;
 }
 
 .thumb-info h4 a {
@@ -192,9 +202,10 @@ body {
 }
 
 .thumb-info p {
-    margin: 3px 0;
-    font-size: 11px;
+    margin: 2px 0;
+    font-size: 10px;
     color: #666;
+    line-height: 1.3;
 }
 
 #sidebar {
@@ -381,10 +392,14 @@ body {
     overflow: hidden;
 }
 
-.related-thumb img {
+.related-thumb a {
     float: left;
     margin-right: 8px;
-    border: 1px solid #ccc;
+    display: block;
+}
+
+.related-info {
+    overflow: hidden;
 }
 
 .related-info h4 {
@@ -405,10 +420,11 @@ body {
 
 /* Placeholder thumbnail styles */
 .thumb-placeholder {
-    display: inline-block;
+    display: block;
     position: relative;
     overflow: hidden;
     border: 1px solid #ccc;
+    background: #000;
 }
 
 .thumb-placeholder-large {
@@ -427,44 +443,59 @@ body {
 }
 
 /* Different colored gradients for variety */
+.thumb-bg-1,
+.thumb-bg-2,
+.thumb-bg-3,
+.thumb-bg-4,
+.thumb-bg-5,
+.thumb-bg-6,
+.thumb-bg-7,
+.thumb-bg-8 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
 .thumb-bg-1 {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    filter: blur(2px);
+    filter: blur(3px);
 }
 
 .thumb-bg-2 {
     background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-    filter: blur(2px);
+    filter: blur(3px);
 }
 
 .thumb-bg-3 {
     background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-    filter: blur(2px);
+    filter: blur(3px);
 }
 
 .thumb-bg-4 {
     background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
-    filter: blur(2px);
+    filter: blur(3px);
 }
 
 .thumb-bg-5 {
     background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
-    filter: blur(2px);
+    filter: blur(3px);
 }
 
 .thumb-bg-6 {
     background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);
-    filter: blur(2px);
+    filter: blur(3px);
 }
 
 .thumb-bg-7 {
     background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
-    filter: blur(2px);
+    filter: blur(3px);
 }
 
 .thumb-bg-8 {
     background: linear-gradient(135deg, #ff9a56 0%, #ff6a88 100%);
-    filter: blur(2px);
+    filter: blur(3px);
 }
 
 .thumb-overlay {
@@ -473,5 +504,6 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.1);
+    background: rgba(0, 0, 0, 0.15);
+    z-index: 1;
 }
