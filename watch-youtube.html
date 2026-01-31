@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Watch Video - YouScry</title>
+<title id="page-title">Watch Video - YouScry</title>
 <link rel="stylesheet" type="text/css" href="style.css" />
 </head>
 <body>
@@ -58,8 +58,16 @@
         </div>
         
         <div id="comments">
-            <h2>Comments</h2>
-            <p style="font-size: 11px; color: #666;">Comments are loaded from YouTube. Watch the video above to see comments on the original platform.</p>
+            <h2>Comments & Responses (<span id="comment-count">0</span>)</h2>
+            <div id="comments-container">
+                <p style="font-size: 11px; color: #666;">Loading comments...</p>
+            </div>
+            
+            <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #ccc;">
+                <p><strong>Post a Comment:</strong></p>
+                <textarea style="width: 95%; height: 60px; padding: 5px; border: 1px solid #ccc;"></textarea><br/>
+                <button style="margin-top: 5px; padding: 5px 15px; background-color: #e62117; color: #fff; border: 1px solid #c00; cursor: pointer;">Post Comment</button>
+            </div>
         </div>
     </div>
     
@@ -104,7 +112,126 @@ function onYouTubeIframeAPIReady() {
         
         loadVideoDetails(videoId);
         loadRelatedVideos(videoId);
+        generateComments();
     }
+}
+
+// Generic comment generator
+function generateComments() {
+    const compliments = [
+        "This is absolutely amazing! Best thing I've seen all week!",
+        "Incredible work! The production quality is off the charts!",
+        "I've watched this like 10 times already. Pure gold!",
+        "This deserves way more views. Seriously underrated!",
+        "The talent here is unreal. Keep up the great work!",
+        "I can't stop watching this. Absolutely mesmerizing!",
+        "This is exactly what I needed today. Thank you!",
+        "The attention to detail is incredible. Well done!",
+        "I'm blown away by how good this is!",
+        "This is a masterpiece. No other way to describe it.",
+        "Finally, some quality content! Subscribed!",
+        "The creativity here is next level. Wow!",
+        "I've been looking for something like this forever!",
+        "This is so well made. You can tell they put their heart into it.",
+        "Absolutely brilliant. Sharing this with everyone I know!",
+        "The best part is at 2:34. Gave me chills!",
+        "I come back to this video every few months. Never gets old.",
+        "This is what the internet was made for!",
+        "How does this not have millions of views yet?",
+        "The algorithm finally recommended something good!"
+    ];
+    
+    const hateComments = [
+        "This is the worst thing I've ever seen. Complete waste of time.",
+        "I want my 5 minutes back. Terrible.",
+        "How did this even get uploaded? Zero effort.",
+        "Clickbait garbage. Nothing like the title promised.",
+        "My cat could make better content than this.",
+        "This is so cringe I couldn't finish watching.",
+        "Absolutely unwatchable. Do better.",
+        "I've seen better quality from a potato camera.",
+        "This is why I'm losing faith in humanity.",
+        "Boring. Predictable. Unoriginal. Next.",
+        "The only good thing about this is the end.",
+        "I'm actually dumber for having watched this.",
+        "Who thought this was a good idea? Fire them.",
+        "This makes no sense whatsoever. Confused and disappointed.",
+        "Overrated trash. Don't waste your time.",
+        "I've seen better acting in a school play.",
+        "The audio quality is painful. Invest in a microphone.",
+        "This is exactly what's wrong with content today.",
+        "Trying way too hard. Just stop.",
+        "I only watched this to leave a negative comment."
+    ];
+    
+    const neutralComments = [
+        "Interesting take on this topic.",
+        "Not bad, but could use some improvement.",
+        "I see what you were going for here.",
+        "This has potential. Keep working on it.",
+        "Some good moments, some not so good.",
+        "It's okay I guess. Not really my thing.",
+        "I've seen better, I've seen worse.",
+        "The concept is good but execution needs work.",
+        "Mixed feelings about this one.",
+        "Decent effort. Room for improvement though."
+    ];
+    
+    const usernames = [
+        "WizardMaster99", "MagicEnthusiast", "SpellCaster2005", "ManaAddict",
+        "FantasyFan42", "DungeonDweller", "MysticViewer", "EnchantedUser",
+        "SorcererSupreme", "RuneReader", "PotionMaker", "CrystalGazer",
+        "DragonRider88", "ElfLord", "DarkMage666", "LightBringer",
+        "ScrollSeeker", "TomeCollector", "WandWielder", "StaffMaster",
+        "ArcaneScholar", "MagicCritic", "SpellboundFan", "MysticSkeptic"
+    ];
+    
+    const timeAgo = [
+        "2 minutes ago", "15 minutes ago", "1 hour ago", "3 hours ago",
+        "5 hours ago", "1 day ago", "2 days ago", "3 days ago",
+        "5 days ago", "1 week ago", "2 weeks ago", "3 weeks ago"
+    ];
+    
+    // Generate 8-12 random comments
+    const numComments = Math.floor(Math.random() * 5) + 8;
+    const comments = [];
+    
+    // Mix of compliments (60%), hate (25%), neutral (15%)
+    for (let i = 0; i < numComments; i++) {
+        const rand = Math.random();
+        let commentText;
+        
+        if (rand < 0.6) {
+            commentText = compliments[Math.floor(Math.random() * compliments.length)];
+        } else if (rand < 0.85) {
+            commentText = hateComments[Math.floor(Math.random() * hateComments.length)];
+        } else {
+            commentText = neutralComments[Math.floor(Math.random() * neutralComments.length)];
+        }
+        
+        comments.push({
+            username: usernames[Math.floor(Math.random() * usernames.length)],
+            time: timeAgo[Math.floor(Math.random() * timeAgo.length)],
+            text: commentText
+        });
+    }
+    
+    // Display comments
+    const container = document.getElementById('comments-container');
+    document.getElementById('comment-count').textContent = numComments;
+    
+    let html = '';
+    comments.forEach(comment => {
+        html += `
+            <div class="comment">
+                <span class="comment-author">${comment.username}</span>
+                <span class="comment-date">${comment.time}</span>
+                <p class="comment-text">${comment.text}</p>
+            </div>
+        `;
+    });
+    
+    container.innerHTML = html;
 }
 
 // Load video details using YouTube Data API
@@ -122,6 +249,7 @@ async function loadVideoDetails(videoId) {
             const stats = video.statistics;
             
             document.getElementById('video-title').textContent = snippet.title;
+            document.title = snippet.title + ' - YouScry';
             document.getElementById('video-stats').innerHTML = `
                 <span>${formatNumber(stats.viewCount)} views</span> | 
                 <span>Published: ${formatDate(snippet.publishedAt)}</span> | 
