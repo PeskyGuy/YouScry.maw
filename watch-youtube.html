@@ -112,9 +112,19 @@ function onYouTubeIframeAPIReady() {
         
         loadVideoDetails(videoId);
         loadRelatedVideos(videoId);
-        generateComments();
     }
+    // Always generate comments regardless of API
+    generateComments();
 }
+
+// Initialize on page load even if YouTube API fails
+window.addEventListener('load', function() {
+    const videoId = getVideoId();
+    if (videoId && !player) {
+        // If YouTube API hasn't loaded yet, generate comments anyway
+        setTimeout(generateComments, 1000);
+    }
+});
 
 // Generic comment generator
 function generateComments() {
@@ -238,32 +248,47 @@ function generateComments() {
 async function loadVideoDetails(videoId) {
     const API_KEY = 'YOUR_YOUTUBE_API_KEY_HERE';
     
-    try {
-        const url = `https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&id=${videoId}&key=${API_KEY}`;
-        const response = await fetch(url);
-        const data = await response.json();
-        
-        if (data.items && data.items.length > 0) {
-            const video = data.items[0];
-            const snippet = video.snippet;
-            const stats = video.statistics;
+    // Set default content immediately
+    document.getElementById('video-title').textContent = 'Wizard Video - ' + videoId;
+    document.title = 'Wizard Video - YouScry';
+    document.getElementById('video-stats').innerHTML = `
+        <span>Loading views...</span> | 
+        <span>From YouTube</span>
+    `;
+    document.getElementById('video-description').innerHTML = `
+        <p><strong>Description:</strong></p>
+        <p>This wizard video is playing directly from YouTube. Set up your API key in watch-youtube.html to see full video details.</p>
+        <p><strong>Tags:</strong> wizard, magic, fantasy</p>
+    `;
+    
+    // Try to load real data if API key is set
+    if (API_KEY !== 'YOUR_YOUTUBE_API_KEY_HERE') {
+        try {
+            const url = `https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&id=${videoId}&key=${API_KEY}`;
+            const response = await fetch(url);
+            const data = await response.json();
             
-            document.getElementById('video-title').textContent = snippet.title;
-            document.title = snippet.title + ' - YouScry';
-            document.getElementById('video-stats').innerHTML = `
-                <span>${formatNumber(stats.viewCount)} views</span> | 
-                <span>Published: ${formatDate(snippet.publishedAt)}</span> | 
-                <span>By: <a href="#">${escapeHtml(snippet.channelTitle)}</a></span>
-            `;
-            document.getElementById('video-description').innerHTML = `
-                <p><strong>Description:</strong></p>
-                <p>${escapeHtml(snippet.description).replace(/\n/g, '<br>')}</p>
-                <p><strong>Tags:</strong> ${snippet.tags ? snippet.tags.join(', ') : 'wizard, magic, fantasy'}</p>
-            `;
-            document.title = snippet.title + ' - YouScry';
+            if (data.items && data.items.length > 0) {
+                const video = data.items[0];
+                const snippet = video.snippet;
+                const stats = video.statistics;
+                
+                document.getElementById('video-title').textContent = snippet.title;
+                document.title = snippet.title + ' - YouScry';
+                document.getElementById('video-stats').innerHTML = `
+                    <span>${formatNumber(stats.viewCount)} views</span> | 
+                    <span>Published: ${formatDate(snippet.publishedAt)}</span> | 
+                    <span>By: <a href="#">${escapeHtml(snippet.channelTitle)}</a></span>
+                `;
+                document.getElementById('video-description').innerHTML = `
+                    <p><strong>Description:</strong></p>
+                    <p>${escapeHtml(snippet.description).replace(/\n/g, '<br>')}</p>
+                    <p><strong>Tags:</strong> ${snippet.tags ? snippet.tags.join(', ') : 'wizard, magic, fantasy'}</p>
+                `;
+            }
+        } catch (error) {
+            console.error('Error loading video details:', error);
         }
-    } catch (error) {
-        console.error('Error loading video details:', error);
     }
 }
 
@@ -271,16 +296,23 @@ async function loadVideoDetails(videoId) {
 async function loadRelatedVideos(videoId) {
     const API_KEY = 'YOUR_YOUTUBE_API_KEY_HERE';
     
-    try {
-        const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&relatedToVideoId=${videoId}&type=video&maxResults=5&key=${API_KEY}`;
-        const response = await fetch(url);
-        const data = await response.json();
-        
-        if (data.items && data.items.length > 0) {
-            displayRelatedVideos(data.items);
+    // Set default message
+    const container = document.getElementById('related-videos-container');
+    container.innerHTML = '<p style="font-size: 11px;">Set up your API key to see related videos.</p>';
+    
+    // Try to load real data if API key is set
+    if (API_KEY !== 'YOUR_YOUTUBE_API_KEY_HERE') {
+        try {
+            const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&relatedToVideoId=${videoId}&type=video&maxResults=5&key=${API_KEY}`;
+            const response = await fetch(url);
+            const data = await response.json();
+            
+            if (data.items && data.items.length > 0) {
+                displayRelatedVideos(data.items);
+            }
+        } catch (error) {
+            console.error('Error loading related videos:', error);
         }
-    } catch (error) {
-        console.error('Error loading related videos:', error);
     }
 }
 

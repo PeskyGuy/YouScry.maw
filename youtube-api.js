@@ -4,6 +4,7 @@ const WIZARD_KEYWORDS = ['wizard', 'wizards', 'magic', 'mage', 'sorcerer', 'spel
 
 // Load videos when page loads
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('Page loaded, attempting to load wizard videos...');
     loadWizardVideos();
 });
 
@@ -48,16 +49,20 @@ async function loadWizardVideos(customQuery = null) {
         }
         
         if (data.items && data.items.length > 0) {
-            // Filter for wizard-related videos
+            // Filter for wizard-related videos (but be less strict)
             const wizardVideos = filterWizardVideos(data.items);
-            displayVideos(wizardVideos);
-            displayFeaturedVideo(wizardVideos[0]);
+            
+            // If filtering removed too many, just use all results
+            const videosToShow = wizardVideos.length > 0 ? wizardVideos : data.items;
+            
+            displayVideos(videosToShow);
+            displayFeaturedVideo(videosToShow[0]);
         } else {
             displayError('No wizard videos found. Try a different search!');
         }
     } catch (error) {
         console.error('Error loading videos:', error);
-        displayError('Failed to load videos. Please check your API key and internet connection.');
+        displayError('Failed to load videos. Error: ' + error.message);
     }
 }
 
@@ -140,6 +145,7 @@ function displayVideos(videos) {
 
 // Display error message
 function displayError(message) {
+    console.error('Display error called:', message);
     const container = document.getElementById('wizard-videos');
     const featuredContent = document.getElementById('featured-content');
     
@@ -147,17 +153,24 @@ function displayError(message) {
         <div style="padding: 20px; background-color: #fff3cd; border: 1px solid #ffc107; color: #856404;">
             <strong>Note:</strong> ${escapeHtml(message)}
             <br><br>
-            <strong>Setup Instructions:</strong>
-            <ol style="margin: 10px 0; padding-left: 20px;">
-                <li>Get a YouTube Data API v3 key from <a href="https://console.developers.google.com/" target="_blank">Google Cloud Console</a></li>
-                <li>Enable the YouTube Data API v3 for your project</li>
-                <li>Replace 'YOUR_YOUTUBE_API_KEY_HERE' in youtube-api.js with your actual API key</li>
-            </ol>
+            <strong>Troubleshooting:</strong>
+            <ul style="margin: 10px 0; padding-left: 20px;">
+                <li>Check browser console (F12) for detailed errors</li>
+                <li>Verify your API key is correct in youtube-api.js</li>
+                <li>Make sure YouTube Data API v3 is enabled in Google Cloud Console</li>
+                <li>Check if you've exceeded your daily quota</li>
+            </ul>
         </div>
     `;
     
-    if (container) container.innerHTML = errorHtml;
-    if (featuredContent) featuredContent.innerHTML = errorHtml;
+    if (container) {
+        container.innerHTML = errorHtml;
+        console.log('Error displayed in wizard-videos container');
+    }
+    if (featuredContent) {
+        featuredContent.innerHTML = errorHtml;
+        console.log('Error displayed in featured-content container');
+    }
 }
 
 // Utility function to escape HTML
