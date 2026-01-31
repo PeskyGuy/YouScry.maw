@@ -1,6 +1,49 @@
 # YouScry - Video Setup
 
-## Adding Video Files
+## YouTube API Integration (NEW!)
+
+YouScry now integrates with YouTube's Data API v3 to display wizard-related videos dynamically!
+
+### Setup Instructions
+
+1. **Get a YouTube API Key:**
+   - Go to [Google Cloud Console](https://console.developers.google.com/)
+   - Create a new project or select an existing one
+   - Enable the "YouTube Data API v3"
+   - Create credentials (API Key)
+   - Copy your API key
+
+2. **Configure the API Key:**
+   - Open `youtube-api.js`
+   - Replace `YOUR_YOUTUBE_API_KEY_HERE` with your actual API key
+   - Open `watch-youtube.html`
+   - Replace `YOUR_YOUTUBE_API_KEY_HERE` with your actual API key (appears twice)
+
+3. **Run the Site:**
+   - Open `index.html` in a web browser
+   - The site will automatically load wizard-related videos from YouTube
+
+### Features
+
+- **Automatic Wizard Filtering:** Videos are filtered to only show wizard, magic, and fantasy-related content
+- **Search Functionality:** Search for specific wizard videos using the search bar
+- **YouTube Player Integration:** Watch videos directly on the site using YouTube's embedded player
+- **Related Videos:** See related wizard videos in the sidebar
+
+### Wizard Keywords
+
+The site filters videos based on these keywords:
+- wizard, wizards, magic, mage, sorcerer, spell, fantasy wizard
+
+### API Usage Notes
+
+- The YouTube Data API has a daily quota limit (10,000 units per day for free tier)
+- Each search request costs 100 units
+- Monitor your usage in the Google Cloud Console
+
+---
+
+## Adding Local Video Files
 
 To add video files to YouScry:
 

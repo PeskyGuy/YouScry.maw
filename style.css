@@ -517,3 +517,27 @@ body {
     background: rgba(0, 0, 0, 0.15);
     z-index: 1;
 }
+
+/* Loading and YouTube styles */
+.loading {
+    padding: 20px;
+    text-align: center;
+    color: #666;
+    font-style: italic;
+}
+
+#youtube-player {
+    background-color: #000;
+    width: 640px;
+    height: 480px;
+    margin: 0 auto;
+}
+
+.video-grid img {
+    display: block;
+    object-fit: cover;
+}
+
+.featured-video img {
+    display: block;
+}

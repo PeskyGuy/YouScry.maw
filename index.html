@@ -4,6 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>YouScry - Try and Scry!</title>
 <link rel="stylesheet" type="text/css" href="style.css" />
+<script src="youtube-api.js"></script>
 </head>
 <body>
 
@@ -13,8 +14,8 @@
         <p>Try and Scry!</p>
     </div>
     <div id="search-bar">
-        <input type="text" placeholder="Search" />
-        <button>Search</button>
+        <input type="text" id="search-input" placeholder="Search wizard videos..." />
+        <button onclick="searchVideos()">Search</button>
     </div>
     <div id="user-links">
         <a href="#">Sign Up</a> | <a href="#">Log In</a>
@@ -32,177 +33,17 @@
 <div id="container">
     <div id="featured">
         <h2>Featured Scryings</h2>
-        <table class="featured-video" cellpadding="0" cellspacing="0">
-            <tr>
-                <td class="featured-thumb">
-                    <a href="watch-wizards-never-die.html">
-                        <span class="thumb-placeholder thumb-placeholder-large">
-                            <span class="thumb-bg-1"></span>
-                            <span class="thumb-overlay"></span>
-                        </span>
-                    </a>
-                </td>
-                <td class="featured-info">
-                    <h3><a href="watch-wizards-never-die.html">Wizards Never Die</a></h3>
-                    <div class="description">Epic LIVE ACTION music video with catchy song and hilarious performances by real wizards!</div>
-                    <div class="meta">Added: 3 weeks ago | Views: 234,567 | Rating: ★★★★★</div>
-                </td>
-            </tr>
-        </table>
+        <div id="featured-content">
+            <div class="loading">Loading wizard videos from YouTube...</div>
+        </div>
     </div>
     
     <div id="main-content">
         <div class="section">
-            <h2>Recently Added</h2>
-            
-            <table class="video-grid" cellpadding="0" cellspacing="0">
-                <tr>
-                    <td class="video-cell">
-                        <a href="watch-wizardale.html">
-                            <span class="thumb-placeholder thumb-placeholder-grid">
-                                <span class="thumb-bg-2"></span>
-                                <span class="thumb-overlay"></span>
-                            </span>
-                        </a>
-                        <div class="video-title"><a href="watch-wizardale.html">WIZARDALE</a></div>
-                        <div class="video-meta">Views: 156,234</div>
-                    </td>
-                    <td class="video-cell">
-                        <a href="watch-wizards-never-die.html">
-                            <span class="thumb-placeholder thumb-placeholder-grid">
-                                <span class="thumb-bg-3"></span>
-                                <span class="thumb-overlay"></span>
-                            </span>
-                        </a>
-                        <div class="video-title"><a href="watch-wizards-never-die.html">Wizards Never Die</a></div>
-                        <div class="video-meta">Views: 234,567</div>
-                    </td>
-                    <td class="video-cell">
-                        <a href="watch-mana-tutorial.html">
-                            <span class="thumb-placeholder thumb-placeholder-grid">
-                                <span class="thumb-bg-4"></span>
-                                <span class="thumb-overlay"></span>
-                            </span>
-                        </a>
-                        <div class="video-title"><a href="watch-mana-tutorial.html">Mana Control Tutorial</a></div>
-                        <div class="video-meta">Views: 34,567</div>
-                    </td>
-                    <td class="video-cell">
-                        <a href="watch-undercity.html">
-                            <span class="thumb-placeholder thumb-placeholder-grid">
-                                <span class="thumb-bg-5"></span>
-                                <span class="thumb-overlay"></span>
-                            </span>
-                        </a>
-                        <div class="video-title"><a href="watch-undercity.html">Life in the Undercity</a></div>
-                        <div class="video-meta">Views: 67,234</div>
-                    </td>
-                </tr>
-            </table>
-        </div>
-        
-        <div class="section">
-            <h2>Music & Performances</h2>
-            
-            <table class="video-grid" cellpadding="0" cellspacing="0">
-                <tr>
-                    <td class="video-cell">
-                        <a href="watch.html">
-                            <span class="thumb-placeholder thumb-placeholder-grid">
-                                <span class="thumb-bg-6"></span>
-                                <span class="thumb-overlay"></span>
-                            </span>
-                        </a>
-                        <div class="video-title"><a href="watch.html">Free District Street Bard</a></div>
-                        <div class="video-meta">Views: 23,891</div>
-                    </td>
-                    <td class="video-cell">
-                        <a href="watch-union-anthem.html">
-                            <span class="thumb-placeholder thumb-placeholder-grid">
-                                <span class="thumb-bg-7"></span>
-                                <span class="thumb-overlay"></span>
-                            </span>
-                        </a>
-                        <div class="video-title"><a href="watch-union-anthem.html">Union Anthem 2005</a></div>
-                        <div class="video-meta">Views: 89,432</div>
-                    </td>
-                    <td class="video-cell">
-                        <a href="#">
-                            <span class="thumb-placeholder thumb-placeholder-grid">
-                                <span class="thumb-bg-8"></span>
-                                <span class="thumb-overlay"></span>
-                            </span>
-                        </a>
-                        <div class="video-title"><a href="#">Church Announcement</a></div>
-                        <div class="video-meta">Views: 45,123</div>
-                    </td>
-                    <td class="video-cell">
-                        <a href="#">
-                            <span class="thumb-placeholder thumb-placeholder-grid">
-                                <span class="thumb-bg-1"></span>
-                                <span class="thumb-overlay"></span>
-                            </span>
-                        </a>
-                        <div class="video-title"><a href="#">Crime Report</a></div>
-                        <div class="video-meta">Views: 12,876</div>
-                    </td>
-                </tr>
-            </table>
-        </div>
-        
-        <div class="section">
-            <h2>Viral & Funny</h2>
-            
-            <table class="video-grid" cellpadding="0" cellspacing="0">
-                <tr>
-                    <td class="video-cell">
-                        <a href="watch-flying-cats.html">
-                            <span class="thumb-placeholder thumb-placeholder-grid">
-                                <span class="thumb-bg-6"></span>
-                                <span class="thumb-overlay"></span>
-                            </span>
-                        </a>
-                        <div class="video-title"><a href="watch-flying-cats.html">Flying Cats Compilation</a></div>
-                        <div class="video-meta">Views: 892,456</div>
-                    </td>
-                    <td class="video-cell">
-                        <a href="watch-mana-explosion.html">
-                            <span class="thumb-placeholder thumb-placeholder-grid">
-                                <span class="thumb-bg-5"></span>
-                                <span class="thumb-overlay"></span>
-                            </span>
-                        </a>
-                        <div class="video-title"><a href="watch-mana-explosion.html">Epic Mana Explosion</a></div>
-                        <div class="video-meta">Views: 445,678</div>
-                    </td>
-                    <td class="video-cell">
-                        <a href="watch-wizardale.html">
-                            <span class="thumb-placeholder thumb-placeholder-grid">
-                                <span class="thumb-bg-2"></span>
-                                <span class="thumb-overlay"></span>
-                            </span>
-                        </a>
-                        <div class="video-title"><a href="watch-wizardale.html">WIZARDALE</a></div>
-                        <div class="video-meta">Views: 156,234</div>
-                    </td>
-                    <td class="video-cell">
-                        <a href="watch-wizards-never-die.html">
-                            <span class="thumb-placeholder thumb-placeholder-grid">
-                                <span class="thumb-bg-3"></span>
-                                <span class="thumb-overlay"></span>
-                            </span>
-                        </a>
-                        <div class="video-title"><a href="watch-wizards-never-die.html">Wizards Never Die</a></div>
-                        <div class="video-meta">Views: 234,567</div>
-                    </td>
-                </tr>
-            </table>
-        </div>
-        
-        <div class="section">
-            <h2>News & Politics</h2>
-            
-
+            <h2>Wizard Videos from YouTube</h2>
+            <div id="wizard-videos">
+                <div class="loading">Loading wizard videos...</div>
+            </div>
         </div>
     </div>
     

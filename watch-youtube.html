@@ -1,0 +1,203 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Watch Video - YouScry</title>
+<link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+<body>
+
+<div id="header">
+    <div id="logo">
+        <h1>YouScry</h1>
+        <p>Try and Scry!</p>
+    </div>
+    <div id="search-bar">
+        <input type="text" id="search-input" placeholder="Search wizard videos..." />
+        <button onclick="window.location.href='index.html'">Search</button>
+    </div>
+    <div id="user-links">
+        <a href="#">Sign Up</a> | <a href="#">Log In</a>
+    </div>
+</div>
+
+<div id="nav">
+    <a href="index.html">Home</a>
+    <a href="#">Scryings</a>
+    <a href="#">Channels</a>
+    <a href="#">Community</a>
+    <a href="#">Upload</a>
+</div>
+
+<div id="container">
+    <div style="float: left; width: 720px;">
+        <div id="video-container">
+            <div id="youtube-player"></div>
+        </div>
+        
+        <div id="video-details">
+            <h1 id="video-title">Loading...</h1>
+            
+            <div class="video-stats" id="video-stats">
+                Loading video information...
+            </div>
+            
+            <div class="rating">
+                <span>★★★★★</span>
+            </div>
+            
+            <div style="margin-top: 10px;">
+                <button style="padding: 5px 15px; background-color: #e62117; color: #fff; border: 1px solid #c00; cursor: pointer; font-weight: bold;">Add to Favorites</button>
+                <button style="padding: 5px 15px; background-color: #f0f0f0; border: 1px solid #ccc; cursor: pointer;">Share</button>
+            </div>
+            
+            <div class="description" id="video-description">
+                <p><strong>Description:</strong></p>
+                <p>Loading description...</p>
+            </div>
+        </div>
+        
+        <div id="comments">
+            <h2>Comments</h2>
+            <p style="font-size: 11px; color: #666;">Comments are loaded from YouTube. Watch the video above to see comments on the original platform.</p>
+        </div>
+    </div>
+    
+    <div id="related-videos">
+        <h3>Related Wizard Videos</h3>
+        <div id="related-videos-container">
+            <p style="font-size: 11px;">Loading related videos...</p>
+        </div>
+    </div>
+</div>
+
+<div id="footer">
+    <p><a href="#">About</a> | <a href="#">Help</a> | <a href="#">Terms of Use</a> | <a href="#">Privacy</a> | <a href="#">Copyright</a> | <a href="#">Contact</a></p>
+    <p>© 2005 YouScry, MAW. All rights reserved.</p>
+</div>
+
+<script>
+// Get video ID from URL
+function getVideoId() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('v');
+}
+
+// Load YouTube IFrame API
+const tag = document.createElement('script');
+tag.src = "https://www.youtube.com/iframe_api";
+const firstScriptTag = document.getElementsByTagName('script')[0];
+firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+let player;
+function onYouTubeIframeAPIReady() {
+    const videoId = getVideoId();
+    if (videoId) {
+        player = new YT.Player('youtube-player', {
+            height: '480',
+            width: '640',
+            videoId: videoId,
+            playerVars: {
+                'playsinline': 1
+            }
+        });
+        
+        loadVideoDetails(videoId);
+        loadRelatedVideos(videoId);
+    }
+}
+
+// Load video details using YouTube Data API
+async function loadVideoDetails(videoId) {
+    const API_KEY = 'YOUR_YOUTUBE_API_KEY_HERE';
+    
+    try {
+        const url = `https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&id=${videoId}&key=${API_KEY}`;
+        const response = await fetch(url);
+        const data = await response.json();
+        
+        if (data.items && data.items.length > 0) {
+            const video = data.items[0];
+            const snippet = video.snippet;
+            const stats = video.statistics;
+            
+            document.getElementById('video-title').textContent = snippet.title;
+            document.getElementById('video-stats').innerHTML = `
+                <span>${formatNumber(stats.viewCount)} views</span> | 
+                <span>Published: ${formatDate(snippet.publishedAt)}</span> | 
+                <span>By: <a href="#">${escapeHtml(snippet.channelTitle)}</a></span>
+            `;
+            document.getElementById('video-description').innerHTML = `
+                <p><strong>Description:</strong></p>
+                <p>${escapeHtml(snippet.description).replace(/\n/g, '<br>')}</p>
+                <p><strong>Tags:</strong> ${snippet.tags ? snippet.tags.join(', ') : 'wizard, magic, fantasy'}</p>
+            `;
+            document.title = snippet.title + ' - YouScry';
+        }
+    } catch (error) {
+        console.error('Error loading video details:', error);
+    }
+}
+
+// Load related wizard videos
+async function loadRelatedVideos(videoId) {
+    const API_KEY = 'YOUR_YOUTUBE_API_KEY_HERE';
+    
+    try {
+        const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&relatedToVideoId=${videoId}&type=video&maxResults=5&key=${API_KEY}`;
+        const response = await fetch(url);
+        const data = await response.json();
+        
+        if (data.items && data.items.length > 0) {
+            displayRelatedVideos(data.items);
+        }
+    } catch (error) {
+        console.error('Error loading related videos:', error);
+    }
+}
+
+// Display related videos
+function displayRelatedVideos(videos) {
+    const container = document.getElementById('related-videos-container');
+    let html = '';
+    
+    videos.forEach(video => {
+        const videoId = video.id.videoId;
+        const title = video.snippet.title;
+        const thumbnail = video.snippet.thumbnails.default.url;
+        
+        html += `
+            <div class="related-thumb">
+                <a href="watch-youtube.html?v=${videoId}">
+                    <img src="${thumbnail}" alt="${escapeHtml(title)}" style="width: 80px; height: 60px; border: 1px solid #ccc; float: left; margin-right: 8px;">
+                </a>
+                <div class="related-info">
+                    <h4><a href="watch-youtube.html?v=${videoId}">${escapeHtml(title)}</a></h4>
+                    <p>From YouTube</p>
+                </div>
+            </div>
+        `;
+    });
+    
+    container.innerHTML = html;
+}
+
+// Utility functions
+function formatNumber(num) {
+    return parseInt(num).toLocaleString();
+}
+
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    return date.toLocaleDateString();
+}
+
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+</script>
+
+</body>
+</html>
