@@ -25,7 +25,7 @@
     <a href="index.html">Home</a>
     <a href="#">Scryings</a>
     <a href="#">Channels</a>
-    <a href="#">Community</a>
+    <a href="community.html">Community</a>
     <a href="#">Upload</a>
 </div>
 
@@ -36,10 +36,10 @@
         </div>
         
         <div id="video-details">
-            <h1 id="video-title">Loading...</h1>
+            <h1 id="video-title">Loading scrying...</h1>
             
             <div class="video-stats" id="video-stats">
-                Loading video information...
+                Retrieving from the mystical archives...
             </div>
             
             <div class="rating">
@@ -49,11 +49,6 @@
             <div style="margin-top: 10px;">
                 <button style="padding: 5px 15px; background-color: #e62117; color: #fff; border: 1px solid #c00; cursor: pointer; font-weight: bold;">Add to Favorites</button>
                 <button style="padding: 5px 15px; background-color: #f0f0f0; border: 1px solid #ccc; cursor: pointer;">Share</button>
-            </div>
-            
-            <div class="description" id="video-description">
-                <p><strong>Description:</strong></p>
-                <p>Loading description...</p>
             </div>
         </div>
         
@@ -81,7 +76,7 @@
 
 <div id="footer">
     <p><a href="#">About</a> | <a href="#">Help</a> | <a href="#">Terms of Use</a> | <a href="#">Privacy</a> | <a href="#">Copyright</a> | <a href="#">Contact</a></p>
-    <p>© 2005 YouScry, MAW. All rights reserved.</p>
+    <p>© 2005 YouScry, M.A.W. All rights reserved.</p>
 </div>
 
 <script>
@@ -248,18 +243,7 @@ function generateComments() {
 async function loadVideoDetails(videoId) {
     const API_KEY = 'YOUR_YOUTUBE_API_KEY_HERE';
     
-    // Set default content immediately
-    document.getElementById('video-title').textContent = 'Wizard Video - ' + videoId;
-    document.title = 'Wizard Video - YouScry';
-    document.getElementById('video-stats').innerHTML = `
-        <span>Loading views...</span> | 
-        <span>From YouTube</span>
-    `;
-    document.getElementById('video-description').innerHTML = `
-        <p><strong>Description:</strong></p>
-        <p>This wizard video is playing directly from YouTube. Set up your API key in watch-youtube.html to see full video details.</p>
-        <p><strong>Tags:</strong> wizard, magic, fantasy</p>
-    `;
+    // Don't set default content - wait for API response
     
     // Try to load real data if API key is set
     if (API_KEY !== 'YOUR_YOUTUBE_API_KEY_HERE') {
@@ -277,18 +261,18 @@ async function loadVideoDetails(videoId) {
                 document.title = snippet.title + ' - YouScry';
                 document.getElementById('video-stats').innerHTML = `
                     <span>${formatNumber(stats.viewCount)} views</span> | 
-                    <span>Published: ${formatDate(snippet.publishedAt)}</span> | 
+                    <span>Added: ${formatDate(snippet.publishedAt)}</span> | 
                     <span>By: <a href="#">${escapeHtml(snippet.channelTitle)}</a></span>
-                `;
-                document.getElementById('video-description').innerHTML = `
-                    <p><strong>Description:</strong></p>
-                    <p>${escapeHtml(snippet.description).replace(/\n/g, '<br>')}</p>
-                    <p><strong>Tags:</strong> ${snippet.tags ? snippet.tags.join(', ') : 'wizard, magic, fantasy'}</p>
                 `;
             }
         } catch (error) {
             console.error('Error loading video details:', error);
+            document.getElementById('video-title').textContent = 'Wizard Scrying';
+            document.getElementById('video-stats').innerHTML = `<span>From the mystical archives</span>`;
         }
+    } else {
+        document.getElementById('video-title').textContent = 'Wizard Scrying';
+        document.getElementById('video-stats').innerHTML = `<span>From the mystical archives</span>`;
     }
 }
 

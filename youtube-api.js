@@ -34,8 +34,25 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Main function to load wizard videos from YouTube
 async function loadWizardVideos(customQuery = null) {
-    const query = customQuery || 'wizard magic fantasy';
-    const maxResults = 12;
+    // Randomize the search query to get different results each time
+    const wizardQueries = [
+        'wizard magic fantasy',
+        'wizard spell casting',
+        'fantasy wizard magic',
+        'sorcerer mage magic',
+        'wizard tutorial',
+        'magic wizard gameplay',
+        'wizard cosplay',
+        'wizard music',
+        'fantasy magic spells',
+        'wizard animation',
+        'wizard movie',
+        'magic wizard effects'
+    ];
+    
+    const randomQuery = wizardQueries[Math.floor(Math.random() * wizardQueries.length)];
+    const query = customQuery || randomQuery;
+    const maxResults = 20; // Get more results to have variety
     
     try {
         const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(query)}&type=video&maxResults=${maxResults}&key=${API_KEY}`;
@@ -53,7 +70,13 @@ async function loadWizardVideos(customQuery = null) {
             const wizardVideos = filterWizardVideos(data.items);
             
             // If filtering removed too many, just use all results
-            const videosToShow = wizardVideos.length > 0 ? wizardVideos : data.items;
+            let videosToShow = wizardVideos.length > 0 ? wizardVideos : data.items;
+            
+            // Shuffle the videos for variety
+            videosToShow = shuffleArray(videosToShow);
+            
+            // Take only 12 for display
+            videosToShow = videosToShow.slice(0, 12);
             
             displayVideos(videosToShow);
             displayFeaturedVideo(videosToShow[0]);
@@ -64,6 +87,16 @@ async function loadWizardVideos(customQuery = null) {
         console.error('Error loading videos:', error);
         displayError('Failed to load videos. Error: ' + error.message);
     }
+}
+
+// Shuffle array function for randomization
+function shuffleArray(array) {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
 }
 
 // Filter videos to ensure they're wizard-related
