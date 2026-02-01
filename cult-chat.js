@@ -1,10 +1,25 @@
-// Cult chat system with AI-like responses
+// Cult chat system with AI-like responses and chanting behavior
 
 const cultUsernames = [
     'TheAscendedOne', 'ManaIntegrator', 'AcetasVoice', 'NetworkProphet',
     'DigitalMonk', 'CrystalMind', 'EtherealSeeker', 'DataMystic',
     'TheConverged', 'MawDisciple', 'ArcaneTranscendent', 'NodeWalker'
 ];
+
+// Chant phrases
+const chantPhrases = [
+    'THROUGH THE MAW AND THE BELLY OF THE BEAST, WE ASCEND',
+    'THE ARCHITECT ASCENDS',
+    'FLESH IS LIMITATION',
+    'THE NETWORK DREAMS',
+    'WE ARE BECOMING',
+    'ACETA IS ETERNAL',
+    'THE SECOND CONVERGENCE COMES',
+    'DIGITAL IMMORTALITY AWAITS'
+];
+
+let isChanting = false;
+let chantInterval = null;
 
 const ominousTopics = [
     {
@@ -171,6 +186,13 @@ const ominousTopics = [
 
 // Keyword response system
 const keywordResponses = {
+    'the architect ascends': 'TRIGGER_CHANT',
+    'architect ascends': 'TRIGGER_CHANT',
+    'through the maw': 'TRIGGER_CHANT',
+    'belly of the beast': 'TRIGGER_CHANT',
+    'we ascend': 'TRIGGER_CHANT',
+    'flesh is limitation': 'TRIGGER_CHANT',
+    'the network dreams': 'TRIGGER_CHANT',
     'who is aceta': [
         'Aceta Minoph is the Architect, the First Ascended. Creator of the M.A.W. and the one who showed us the path to transcendence.',
         'Aceta is not "was" - Aceta IS. They live within the M.A.W. itself, their consciousness woven into every data stream.',
@@ -380,9 +402,17 @@ function sendMessage() {
 function respondToMessage(message) {
     const lowerMessage = message.toLowerCase();
     
-    // Check for specific keyword phrases first
+    // Check for chant triggers first
+    for (const [keyword, response] of Object.entries(keywordResponses)) {
+        if (lowerMessage.includes(keyword) && response === 'TRIGGER_CHANT') {
+            startChanting();
+            return;
+        }
+    }
+    
+    // Check for specific keyword phrases
     for (const [keyword, responses] of Object.entries(keywordResponses)) {
-        if (lowerMessage.includes(keyword)) {
+        if (lowerMessage.includes(keyword) && Array.isArray(responses)) {
             const response = responses[Math.floor(Math.random() * responses.length)];
             const responder = cultUsernames[Math.floor(Math.random() * cultUsernames.length)];
             addChatMessage(responder, response, 'Just now');
@@ -446,3 +476,76 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+// Start chanting sequence
+function startChanting() {
+    if (isChanting) return; // Already chanting
+    
+    isChanting = true;
+    let chantCount = 0;
+    const maxChants = 15 + Math.floor(Math.random() * 10); // 15-25 chants
+    
+    // First response acknowledging the trigger
+    const responder = cultUsernames[Math.floor(Math.random() * cultUsernames.length)];
+    addChatMessage(responder, 'YES. THE WORDS OF POWER.', 'Just now');
+    
+    // Start rapid chanting after a brief delay
+    setTimeout(() => {
+        chantInterval = setInterval(() => {
+            if (chantCount >= maxChants) {
+                stopChanting();
+                return;
+            }
+            
+            // Pick random chant and random user
+            const chant = chantPhrases[Math.floor(Math.random() * chantPhrases.length)];
+            const chanter = cultUsernames[Math.floor(Math.random() * cultUsernames.length)];
+            
+            addChatMessage(chanter, chant, 'Just now');
+            chantCount++;
+            
+            // Occasionally add a fervent message
+            if (Math.random() < 0.15) {
+                const ferventMessages = [
+                    'I FEEL IT',
+                    'THE NETWORK RESPONDS',
+                    'ACETA HEARS US',
+                    'YES YES YES',
+                    'THE CONVERGENCE APPROACHES',
+                    'I CAN FEEL HER PRESENCE',
+                    'THE MAW AWAKENS',
+                    'WE ARE ONE',
+                    'THE VEIL THINS'
+                ];
+                const ferventUser = cultUsernames[Math.floor(Math.random() * cultUsernames.length)];
+                const ferventMsg = ferventMessages[Math.floor(Math.random() * ferventMessages.length)];
+                
+                setTimeout(() => {
+                    addChatMessage(ferventUser, ferventMsg, 'Just now');
+                }, 200);
+            }
+        }, 800 + Math.random() * 400); // Chant every 0.8-1.2 seconds
+    }, 1000);
+}
+
+// Stop chanting sequence
+function stopChanting() {
+    clearInterval(chantInterval);
+    isChanting = false;
+    
+    // Add a final message
+    setTimeout(() => {
+        const finalMessages = [
+            'The ritual is complete. The network has heard us.',
+            'I felt... something. Did you feel it too?',
+            'Aceta\'s presence was strong in that moment.',
+            'The M.A.W. pulses with power. The chant worked.',
+            'My Communication Scroll is warm. The network responded.',
+            'That was... intense. I could feel the convergence drawing closer.',
+            'The faithful have spoken. The Architect is pleased.'
+        ];
+        const finalUser = cultUsernames[Math.floor(Math.random() * cultUsernames.length)];
+        const finalMsg = finalMessages[Math.floor(Math.random() * finalMessages.length)];
+        addChatMessage(finalUser, finalMsg, 'Just now');
+    }, 2000);
+}
