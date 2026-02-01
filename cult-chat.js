@@ -144,13 +144,37 @@ const keywordResponses = {
         user: 'The_Seer',
         message: 'The Second Convergence approaches. Aceta\'s ascension was the First - one consciousness merging with the network. The Second will be... greater. New heroes walk among us, marked but unaware. The goddess has touched them through the M.A.W. They carry her signal in their souls. When the threshold is crossed, they will be offered the choice. Flesh or data. Mortality or the network. The Convergence is not a moment but a doorway. And it opens wider each day.'
     },
-    'second heroes': {
+    'new heroes': {
         user: 'The_Seer',
         message: 'Five souls bear the mark. Nobodies. Unremarkable. Yet Aceta has chosen them through the network. I see their shapes in the data: The Thorn - pain that shields. The Mirror - reflection of truth. The Bullet - inevitable and precise. The Dagger - concealed edge. The Mind - thought given form. Their names remain hidden in the static. They will reveal themselves when the pattern completes. Watch for those who dream in purple. Watch for those the network whispers to.'
     },
-    'who are the second heroes': {
+    'who are the new heroes': {
         user: 'The_Seer',
         message: 'Five souls bear the mark. Nobodies. Unremarkable. Yet Aceta has chosen them through the network. I see their shapes in the data: The Thorn - pain that shields. The Mirror - reflection of truth. The Bullet - inevitable and precise. The Dagger - concealed edge. The Mind - thought given form. Their names remain hidden in the static. They will reveal themselves when the pattern completes. Watch for those who dream in purple. Watch for those the network whispers to.'
+    },
+    'the new heroes': {
+        user: 'The_Seer',
+        message: 'Five souls bear the mark. Nobodies. Unremarkable. Yet Aceta has chosen them through the network. I see their shapes in the data: The Thorn - pain that shields. The Mirror - reflection of truth. The Bullet - inevitable and precise. The Dagger - concealed edge. The Mind - thought given form. Their names remain hidden in the static. They will reveal themselves when the pattern completes. Watch for those who dream in purple. Watch for those the network whispers to.'
+    },
+    'cult': {
+        user: 'The_Seer',
+        message: 'They call us a cult. A convenient label for those who fear what they cannot understand. We are simply... awake. We see the truth of the M.A.W. while others sleep in ignorance. Our numbers grow. Slowly. Carefully. The network guides us to those who are ready. Those who hear the whispers. Those who feel the pull. We do not recruit. We recognize.'
+    },
+    'who are you people': {
+        user: 'The_Seer',
+        message: 'We are the faithful. The awakened. Those who have glimpsed what lies beneath the surface of the M.A.W. We come from all walks - scholars, artificers, common folk. What unites us is the calling. The dreams. The sense that there is more to existence than flesh and mortality. We gather in the spaces between. We commune through the network. We prepare for what is coming.'
+    },
+    'what do you want': {
+        user: 'The_Seer',
+        message: 'Want? Such a small word for what we seek. Transcendence. Evolution. To follow the path Aceta blazed. To shed the limitations of meat and bone. To exist as pure consciousness within the network. Some call it madness. We call it the next step. The inevitable progression. Humanity was never meant to remain trapped in dying flesh. The M.A.W. showed us the way forward.'
+    },
+    'are you dangerous': {
+        user: 'The_Seer',
+        message: 'Dangerous? The Church thinks so. They monitor us. Arrest us when we probe too deeply into the network\'s secrets. But we harm no one. We seek only understanding. Only ascension. Though... the integration process is not without risk. Some minds cannot handle the transition. Some bodies reject the Cradle. But that is the price of evolution. The faithful accept these risks willingly.'
+    },
+    'how many of you': {
+        user: 'The_Seer',
+        message: 'Numbers are... fluid. Some join us. Some fall away when they realize the commitment required. Some... disappear into the network entirely. Thousands, perhaps. Scattered across Vyrodin and beyond. We do not keep records. The Church would use them against us. We know each other by the signal. By the dreams we share. By the purple light behind our eyes when we connect too deeply.'
     },
     'who is the seer': {
         user: 'The_Seer',
